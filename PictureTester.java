@@ -58,9 +58,9 @@ public class PictureTester
     public static void convertToBlackAndWhite() {
         Picture pic = new Picture("femaleLionAndHall.jpg");
         pic.explore();
-        
+
         Pixel[][] pixels = pic.getPixels2D();
-        
+
         for (Pixel[] rowArray: pixels) {
             for (Pixel pixObj: rowArray){  
                 double average = pixObj.getAverage();
@@ -71,10 +71,41 @@ public class PictureTester
         }   
         pic.explore();
     }
-    
+
     /* Method to change the brightness of a picture */
     public static void adjustBrightness(double brightness) {
-        
+        Picture pic = new Picture("koala.jpg");
+        pic.explore();
+
+        Pixel[][] pixels = pic.getPixels2D();
+
+        for (Pixel[] rowArray: pixels) {
+            for (Pixel pixObj: rowArray){  
+                int R = (int)(pixObj.getRed() * brightness);
+                int G = (int)(pixObj.getGreen() * brightness);
+                int B = (int)(pixObj.getBlue() * brightness);
+
+                if (R < 255 && G < 255 && B < 255) {
+                    pixObj.setRed(R);
+                    pixObj.setGreen(G);
+                    pixObj.setBlue(B);
+                } else {
+                    double maxRGB = Math.max(pixObj.getRed(), pixObj.getBlue());
+                    maxRGB = Math.max(maxRGB, pixObj.getGreen());                   
+                    brightness = 255/maxRGB;
+
+                    R = (int)(pixObj.getRed() * brightness);
+                    G = (int)(pixObj.getGreen() * brightness);
+                    B = (int)(pixObj.getBlue() * brightness);
+                    
+                    pixObj.setRed(R);
+                    pixObj.setGreen(G);
+                    pixObj.setBlue(B);
+                }
+            }
+        }   
+        pic.explore();
+
     }
 
     /** Main method for testing.  Every class can have a main
@@ -84,7 +115,8 @@ public class PictureTester
         // uncomment a call here to run a test
         // and comment out the ones you don't want
         // to run
-        convertToBlackAndWhite();
+        //convertToBlackAndWhite();
+        adjustBrightness(1.4);
         //testZeroBlue();
         //testZeroRed();
         //testKeepOnlyBlue();
