@@ -5,6 +5,7 @@
  * methods.  Uncomment the methods and the code
  * in the main to test.
  * 
+ * 
  * @author Barbara Ericson 
  */
 public class PictureTester
@@ -76,36 +77,75 @@ public class PictureTester
     public static void adjustBrightness(double brightness) {
         Picture pic = new Picture("koala.jpg");
         pic.explore();
-
         Pixel[][] pixels = pic.getPixels2D();
 
         for (Pixel[] rowArray: pixels) {
             for (Pixel pixObj: rowArray){  
-                int R = (int)(pixObj.getRed() * brightness);
-                int G = (int)(pixObj.getGreen() * brightness);
-                int B = (int)(pixObj.getBlue() * brightness);
-
-                if (R < 255 && G < 255 && B < 255) {
-                    pixObj.setRed(R);
-                    pixObj.setGreen(G);
-                    pixObj.setBlue(B);
+                if (pixObj.getRed()*brightness < 255 && pixObj.getGreen()*brightness < 255 && pixObj.getBlue()*brightness < 255) {
+                    pixObj.setRed((int)(pixObj.getRed()*brightness));
+                    pixObj.setGreen((int)(pixObj.getGreen()*brightness));
+                    pixObj.setBlue((int)(pixObj.getBlue()*brightness));
                 } else {
-                    double maxRGB = Math.max(pixObj.getRed(), pixObj.getBlue());
-                    maxRGB = Math.max(maxRGB, pixObj.getGreen());                   
-                    brightness = 255/maxRGB;
-
-                    R = (int)(pixObj.getRed() * brightness);
-                    G = (int)(pixObj.getGreen() * brightness);
-                    B = (int)(pixObj.getBlue() * brightness);
-                    
-                    pixObj.setRed(R);
-                    pixObj.setGreen(G);
-                    pixObj.setBlue(B);
+                    double maxRGB = Math.max(pixObj.getRed(), pixObj.getGreen());
+                    maxRGB = Math.max(maxRGB, pixObj.getBlue());                   
+                    int tbrightness = 255/(int)maxRGB;
+                    pixObj.setRed((int)(pixObj.getRed()*tbrightness));
+                    pixObj.setGreen((int)(pixObj.getGreen()*tbrightness));
+                    pixObj.setBlue((int)(pixObj.getBlue()*tbrightness));
                 }
             }
         }   
         pic.explore();
-
+    }
+    
+    public static void verticalMirror() {
+        Picture pic = new Picture("redMotorcycle.jpg");
+        pic.explore();
+       
+        Pixel[][] pixels = pic.getPixels2D();
+        
+        for (int r = 0; r < pixels.length; r++) {
+            for (int c = 0; c < pixels[0].length/2; c++) {
+                pixels[r][(pixels[0].length-c)-1].setRed(pixels[r][c].getRed());
+                pixels[r][(pixels[0].length-c)-1].setGreen(pixels[r][c].getGreen());
+                pixels[r][(pixels[0].length-c)-1].setBlue(pixels[r][c].getBlue());
+            }
+        }
+        pic.explore();
+    }
+    
+    public static void horizontalMirror() {
+        Picture pic = new Picture("redMotorcycle.jpg");
+        pic.explore();
+       
+        Pixel[][] pixels = pic.getPixels2D();
+        
+        for (int r = 0; r < pixels.length/2; r++) {
+            for (int c = 0; c < pixels[0].length; c++) {
+                pixels[(pixels.length-r)-1][c].setRed(pixels[r][c].getRed());
+                pixels[(pixels.length-r)-1][c].setGreen(pixels[r][c].getGreen());
+                pixels[(pixels.length-r)-1][c].setBlue(pixels[r][c].getBlue());
+            }
+        }
+        pic.explore();
+    }
+    
+    public static void flipHorizontal() {
+        Picture pic1 = new Picture("butterfly1.jpg");
+        Picture pic2 = new Picture("butterfly1.jpg");
+        pic1.explore();
+       
+        Pixel[][] pixels1 = pic1.getPixels2D();
+        Pixel[][] pixels2 = pic2.getPixels2D();
+        
+        for (int r = 0; r < pixels1.length; r++) {
+            for (int c = 0; c < pixels1[0].length; c++) {
+                
+            }
+        }
+        
+        
+        pic1.explore();
     }
 
     /** Main method for testing.  Every class can have a main
@@ -116,7 +156,9 @@ public class PictureTester
         // and comment out the ones you don't want
         // to run
         //convertToBlackAndWhite();
-        adjustBrightness(1.4);
+        //horizontalMirror();
+        flipHorizontal();
+        //adjustBrightness(1.3);
         //testZeroBlue();
         //testZeroRed();
         //testKeepOnlyBlue();
